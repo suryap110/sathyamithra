@@ -1,0 +1,309 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Atmospheric Cosmic Nebulae — Fixed Behind Content ─────────── */
+.aurora-top {
+  position: fixed;
+  top: -20%;
+  left: 5%;
+  width: 60vw;
+  height: 55vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.24) 0%, rgba(5, 150, 105, 0.12) 40%, rgba(4, 120, 87, 0.04) 65%, transparent 80%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  animation: aurora-drift1 14s ease-in-out infinite alternate;
+}
+
+.aurora-mid {
+  position: fixed;
+  top: 30%;
+  right: -10%;
+  width: 50vw;
+  height: 50vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.20) 0%, rgba(59, 130, 246, 0.12) 45%, rgba(30, 58, 138, 0.04) 70%, transparent 80%);
+  filter: blur(85px);
+  pointer-events: none;
+  z-index: 0;
+  animation: aurora-drift2 16s ease-in-out infinite alternate;
+}
+
+.aurora-accent {
+  position: fixed;
+  top: 15%;
+  left: -15%;
+  width: 45vw;
+  height: 45vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.16) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 80%);
+  filter: blur(75px);
+  pointer-events: none;
+  z-index: 0;
+  animation: aurora-drift3 20s ease-in-out infinite alternate;
+}
+
+.aurora-bottom {
+  position: fixed;
+  bottom: -20%;
+  left: 20%;
+  width: 55vw;
+  height: 55vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.18) 0%, rgba(217, 119, 6, 0.09) 45%, rgba(146, 64, 14, 0.03) 70%, transparent 85%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  animation: aurora-drift1 18s ease-in-out infinite alternate reverse;
+}
+
+/* Subtle Screen Edge Vignette for Deep Immersive Contrast */
+.cosmic-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  box-shadow: inset 0 0 160px rgba(1, 3, 6, 0.88);
+}
+
+@keyframes aurora-drift1 {
+  0%   { transform: translate(0,0) scale(1); }
+  33%  { transform: translate(8vw,5vh) scale(1.12); }
+  66%  { transform: translate(3vw,12vh) scale(0.95); }
+  100% { transform: translate(12vw,8vh) scale(1.08); }
+}
+@keyframes aurora-drift2 {
+  0%   { transform: translate(0,0) scale(1); }
+  33%  { transform: translate(-7vw,-6vh) scale(1.10); }
+  66%  { transform: translate(-12vw,-3vh) scale(0.92); }
+  100% { transform: translate(-5vw,-10vh) scale(1.06); }
+}
+@keyframes aurora-drift3 {
+  0%   { transform: translate(0,0) scale(1); }
+  50%  { transform: translate(-8vw,10vh) scale(1.15); }
+  100% { transform: translate(10vw,-8vh) scale(0.90); }
+}
+
+:root {
+  --background: transparent;
+  --foreground: #0f172a;
+}
+
+body {
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Glass card utility */
+.glass {
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.glass-dark {
+  background: rgba(12,19,32,0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.09);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.07);
+}
+
+/* Light mode fallback */
+html:not(.dark) {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 45%, #eff6ff 75%, #fefce8 100%);
+}
+html:not(.dark) body {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 45%, #eff6ff 75%, #fefce8 100%);
+}
+html:not(.dark) .bg-white {
+  background-color: rgba(255,255,255,0.85) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+html:not(.dark) .bg-gray-50 {
+  background-color: rgba(249,250,251,0.80) !important;
+}
+
+/* Animated gradient text */
+.gradient-text {
+  background: linear-gradient(135deg,#10b981,#059669,#3b82f6,#f59e0b);
+  background-size: 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 6s linear infinite;
+}
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Floating animations */
+@keyframes float {
+  0%,100% { transform: translateY(0px); }
+  50%     { transform: translateY(-10px); }
+}
+.float        { animation: float 4s ease-in-out infinite; }
+.float-slow   { animation: float 6s ease-in-out infinite; }
+.float-delay  { animation: float 4s ease-in-out 1.5s infinite; }
+
+/* Pulse glow */
+@keyframes pulse-glow {
+  0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.30); }
+  50%     { box-shadow: 0 0 32px 8px rgba(16,185,129,0.15); }
+}
+.pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(16,185,129,0.40); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(16,185,129,0.70); }
+
+/* ── Dark Mode Cosmic Theme ───────────────────────────────────── */
+html.dark {
+  background: radial-gradient(ellipse 120% 100% at 50% -10%, #091a14 0%, #040d14 40%, #02060a 75%, #010306 100%) !important;
+  background-color: #020508 !important;
+  color-scheme: dark;
+}
+html.dark body {
+  background: radial-gradient(ellipse 120% 100% at 50% -10%, #091a14 0%, #040d14 40%, #02060a 75%, #010306 100%) !important;
+  background-color: #020508 !important;
+  color: #e2e8f0;
+}
+
+/* In dark mode, full-width section wrappers MUST be transparent so background flows through */
+html.dark section,
+html.dark section.bg-white,
+html.dark section.bg-gray-50,
+html.dark section.bg-green-50,
+html.dark div.min-h-screen.bg-white {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* ── ALL card/surface backgrounds go dark + glassy ─────────── */
+html.dark .bg-white:not(section):not(div.min-h-screen) {
+  background-color: rgba(12, 19, 32, 0.65) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  color: #e2e8f0;
+  border-color: rgba(255, 255, 255, 0.09) !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.07) !important;
+}
+html.dark .bg-gray-50:not(section)  {
+  background-color: rgba(15, 23, 42, 0.55) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-color: rgba(255, 255, 255, 0.07) !important;
+}
+html.dark .bg-gray-100:not(section) {
+  background-color: rgba(30, 41, 59, 0.65) !important;
+  backdrop-filter: blur(12px) !important;
+}
+html.dark .bg-gray-200 { background-color: rgba(30, 41, 59, 0.55) !important; }
+
+/* ALL Tailwind colour-50 cards → dark translucent with colour tint */
+html.dark .bg-green-50  { background-color: rgba(6,78,59,0.28)   !important; border-color: rgba(22,163,74,0.22) !important; }
+html.dark .bg-green-100 { background-color: rgba(6,78,59,0.40)   !important; }
+html.dark .bg-blue-50   { background-color: rgba(23,37,84,0.28)  !important; border-color: rgba(59,130,246,0.22) !important; }
+html.dark .bg-blue-100  { background-color: rgba(23,37,84,0.40)  !important; }
+html.dark .bg-purple-50 { background-color: rgba(59,7,100,0.28)  !important; border-color: rgba(168,85,247,0.22) !important; }
+html.dark .bg-purple-100{ background-color: rgba(59,7,100,0.40)  !important; }
+html.dark .bg-indigo-50 { background-color: rgba(30,27,75,0.28)  !important; border-color: rgba(99,102,241,0.22) !important; }
+html.dark .bg-indigo-100{ background-color: rgba(30,27,75,0.40)  !important; }
+html.dark .bg-red-50    { background-color: rgba(69,10,10,0.28)  !important; border-color: rgba(239,68,68,0.22) !important; }
+html.dark .bg-red-100   { background-color: rgba(69,10,10,0.40)  !important; }
+html.dark .bg-orange-50 { background-color: rgba(67,20,7,0.28)   !important; border-color: rgba(249,115,22,0.22) !important; }
+html.dark .bg-orange-100{ background-color: rgba(67,20,7,0.40)   !important; }
+html.dark .bg-yellow-50 { background-color: rgba(66,32,6,0.28)   !important; border-color: rgba(234,179,8,0.22) !important; }
+html.dark .bg-yellow-100{ background-color: rgba(66,32,6,0.40)   !important; }
+html.dark .bg-amber-50  { background-color: rgba(69,26,3,0.28)   !important; border-color: rgba(245,158,11,0.22) !important; }
+html.dark .bg-amber-100 { background-color: rgba(69,26,3,0.40)   !important; }
+html.dark .bg-pink-50   { background-color: rgba(72,4,48,0.28)   !important; border-color: rgba(236,72,153,0.22) !important; }
+html.dark .bg-pink-100  { background-color: rgba(72,4,48,0.40)   !important; }
+html.dark .bg-rose-50   { background-color: rgba(69,10,30,0.28)  !important; border-color: rgba(244,63,94,0.22) !important; }
+html.dark .bg-rose-100  { background-color: rgba(69,10,30,0.40)  !important; }
+html.dark .bg-cyan-50   { background-color: rgba(8,51,68,0.28)   !important; border-color: rgba(6,182,212,0.22) !important; }
+html.dark .bg-cyan-100  { background-color: rgba(8,51,68,0.40)   !important; }
+html.dark .bg-teal-50   { background-color: rgba(4,47,46,0.28)   !important; border-color: rgba(20,184,166,0.22) !important; }
+html.dark .bg-teal-100  { background-color: rgba(4,47,46,0.40)   !important; }
+html.dark .bg-sky-50    { background-color: rgba(12,74,110,0.28) !important; border-color: rgba(14,165,233,0.22) !important; }
+html.dark .bg-sky-100   { background-color: rgba(12,74,110,0.40) !important; }
+html.dark .bg-slate-50  { background-color: rgba(15,23,42,0.45)  !important; }
+html.dark .bg-stone-50  { background-color: rgba(28,25,23,0.45)  !important; }
+
+/* ALL colored borders → subtle */
+html.dark [class*="border-green-"]  { border-color: rgba(22,163,74,0.28)  !important; }
+html.dark [class*="border-blue-"]   { border-color: rgba(59,130,246,0.28) !important; }
+html.dark [class*="border-purple-"] { border-color: rgba(168,85,247,0.28) !important; }
+html.dark [class*="border-red-"]    { border-color: rgba(239,68,68,0.28)  !important; }
+html.dark [class*="border-yellow-"] { border-color: rgba(234,179,8,0.28)  !important; }
+html.dark [class*="border-gray-"]   { border-color: rgba(255,255,255,0.08) !important; }
+
+/* ── Dark text ───────────────────────────────────────────────── */
+html.dark .text-gray-900 { color: #f1f5f9 !important; }
+html.dark .text-gray-800 { color: #e2e8f0 !important; }
+html.dark .text-gray-700 { color: #cbd5e1 !important; }
+html.dark .text-gray-600 { color: #94a3b8 !important; }
+html.dark .text-gray-500 { color: #64748b !important; }
+html.dark .text-gray-400 { color: #475569 !important; }
+
+/* ── Navbar / utility bar — NO BLACK LINE ────────────────────── */
+html.dark #utility-bar,
+html.dark header,
+html.dark header.sticky {
+  background: rgba(8, 14, 22, 0.88) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-top: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+/* Only the very bottom of the whole navbar gets a shadow */
+html.dark header.sticky {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5) !important;
+}
+/* Kill ALL border-b lines inside dark navbar area */
+html.dark header * { border-color: rgba(255,255,255,0.06) !important; }
+
+/* ── Input Readability & Contrast (Universal) ─────────────────── */
+input, select, textarea {
+  color: #0f172a !important;
+  caret-color: #10b981 !important;
+}
+input::placeholder, select::placeholder, textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Dark mode inputs: deep glass with high-contrast bright text */
+html.dark input, html.dark select, html.dark textarea {
+  background-color: rgba(15, 23, 42, 0.90) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+  caret-color: #34d399 !important;
+  backdrop-filter: blur(12px) !important;
+}
+html.dark input::placeholder, html.dark select::placeholder, html.dark textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Active focus ring */
+input:focus, select:focus, textarea:focus {
+  border-color: #10b981 !important;
+  outline: none !important;
+}
+html.dark input:focus, html.dark select:focus, html.dark textarea:focus {
+  border-color: #34d399 !important;
+  background-color: rgba(15, 23, 42, 0.96) !important;
+}
+
+/* ── Theme transition (only on background/card surfaces) ───── */
+body, header, footer, .bg-white {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
