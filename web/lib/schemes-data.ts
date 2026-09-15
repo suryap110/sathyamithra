@@ -840,3 +840,44 @@ export function searchSchemes(query: string): Scheme[] {
     s.ministry.toLowerCase().includes(q)
   );
 }
+
+export const CATEGORY_ID_TO_SLUG: Record<string, string> = {
+  '8c6b867c-0d9b-47bf-85f8-a1cafd7776ca': 'education',
+  'a2435260-b460-46cf-9465-3f379979a3a0': 'agriculture',
+  '6ddb4320-1664-480e-b1fd-9cb299ce18c8': 'banking',
+  '100b4bc4-37b1-4dc1-8b3a-439ec7606cfa': 'business',
+  'e4e47878-826a-421b-8069-48b2a628d43e': 'health',
+  '9ffe00d5-3953-4067-b086-afa7d8fa9e9b': 'housing',
+  '328bf645-5d83-4498-996a-a4754438739f': 'law',
+  '5083a8c6-e23d-44eb-a11c-9612e89d427d': 'science',
+  '4ece96f6-58fa-4c9e-8df1-e724d3fd701f': 'skills',
+  '7e5d5e43-d0f3-4da3-a03f-a39e7cb2ec4a': 'social',
+  'ea327821-9355-4bc3-af4c-84e4716532e3': 'sports',
+  '55f6950d-5c82-43e8-8129-24fe82f6e2b7': 'transport',
+  '81ded2f6-f50c-4f29-8f67-dd9fd9cc7799': 'tourism',
+  '36248202-12de-4cc6-b8d4-c18e71f1d900': 'utility',
+  'e6529286-a884-469b-9e39-c98fd94ec8f1': 'women',
+};
+
+export function normalizeCategory(cat: any): string {
+  if (!cat) return 'social';
+  if (typeof cat === 'object') {
+    if (cat.slug) return cat.slug.toLowerCase();
+    if (cat.id && CATEGORY_ID_TO_SLUG[cat.id]) return CATEGORY_ID_TO_SLUG[cat.id];
+    if (cat.name) {
+      const found = CATEGORIES.find(c => c.label.toLowerCase() === cat.name.toLowerCase());
+      if (found) return found.id;
+    }
+  }
+  if (typeof cat === 'string') {
+    const trimmed = cat.trim();
+    if (CATEGORY_ID_TO_SLUG[trimmed]) return CATEGORY_ID_TO_SLUG[trimmed];
+    const lower = trimmed.toLowerCase();
+    if (CATEGORY_ID_TO_SLUG[lower]) return CATEGORY_ID_TO_SLUG[lower];
+    const found = CATEGORIES.find(c => c.id.toLowerCase() === lower || c.label.toLowerCase() === lower);
+    if (found) return found.id;
+    return lower;
+  }
+  return 'social';
+}
+

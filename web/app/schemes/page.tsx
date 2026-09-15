@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import {
   ALL_SCHEMES, CATEGORIES, STATES, searchSchemes, getSchemesByCategory,
-  type Scheme
+  normalizeCategory, type Scheme
 } from "@/lib/schemes-data";
 import { apiClient } from "@/lib/api-client";
 
@@ -37,7 +37,8 @@ const CAT_COLOR: Record<string, string> = {
 
 // ─── Scheme Card ──────────────────────────────────────────────
 function SchemeCard({ scheme, index }: { scheme: Scheme; index: number }) {
-  const cat = CATEGORIES.find(c => c.id === scheme.category);
+  const normCat = normalizeCategory(scheme.category);
+  const cat = CATEGORIES.find(c => c.id === normCat);
   const colorCls = cat ? (CAT_COLOR[cat.color] || "bg-gray-50 text-gray-700") : "bg-gray-50 text-gray-700";
   return (
     <motion.div
@@ -159,25 +160,28 @@ export default function SchemesPage() {
 
         const res = await apiClient.get('/schemes', { params });
         if (res.data && Array.isArray(res.data) && res.data.length > 0) {
-          const mapped: Scheme[] = res.data.map((s: any) => ({
-            id: s.id,
-            name: s.title,
-            ministry: s.ministry || "Government of India",
-            category: s.category?.slug || s.category_id || "social",
-            state: s.state || "Central Government",
-            benefit: s.benefit_type || "Direct Benefit",
-            benefitAmount: s.benefit_summary || (s.estimated_benefit_amount ? `₹${s.estimated_benefit_amount.toLocaleString("en-IN")}` : undefined),
-            description: s.short_description || s.title,
-            eligibility: s.eligibility_rules?.length
-              ? s.eligibility_rules.map((r: any) => r.rule_explanation || "Standard criteria")
-              : ["Indian citizen meeting demographic guidelines"],
-            documents: s.required_documents?.length
-              ? s.required_documents.map((d: any) => d.document_type)
-              : ["Aadhaar Card", "Bank Passbook"],
-            applicationUrl: s.official_url || "https://myscheme.gov.in",
-            tags: [s.category?.slug, s.state, s.benefit_type].filter(Boolean) as string[],
-            featured: s.is_featured || false,
-          }));
+          const mapped: Scheme[] = res.data.map((s: any) => {
+            const catSlug = normalizeCategory(s.category?.slug || s.category || s.category_id);
+            return {
+              id: s.id,
+              name: s.title,
+              ministry: s.ministry || "Government of India",
+              category: catSlug,
+              state: s.state || "Central Government",
+              benefit: s.benefit_type || "Direct Benefit",
+              benefitAmount: s.benefit_summary || (s.estimated_benefit_amount ? `₹${s.estimated_benefit_amount.toLocaleString("en-IN")}` : undefined),
+              description: s.short_description || s.title,
+              eligibility: s.eligibility_rules?.length
+                ? s.eligibility_rules.map((r: any) => r.rule_explanation || "Standard criteria")
+                : ["Indian citizen meeting demographic guidelines"],
+              documents: s.required_documents?.length
+                ? s.required_documents.map((d: any) => d.document_type)
+                : ["Aadhaar Card", "Bank Passbook"],
+              applicationUrl: s.official_url || "https://myscheme.gov.in",
+              tags: [catSlug, s.state, s.benefit_type].filter(Boolean) as string[],
+              featured: s.is_featured || false,
+            };
+          });
           setDbSchemes(mapped);
           setIsDbConnected(true);
         }
@@ -208,7 +212,7 @@ export default function SchemesPage() {
       );
     }
     if (activeCategory) {
-      results = results.filter(s => s.category.toLowerCase() === activeCategory.toLowerCase());
+      results = results.filter(s => normalizeCategory(s.category) === activeCategory.toLowerCase());
     }
     if (activeState && activeState !== "Central Government") {
       results = results.filter(s => s.state === activeState || s.state === "Central Government" || s.state === "Central");
@@ -296,7 +300,7 @@ export default function SchemesPage() {
                   <span className="text-[10px] opacity-75">{sourceList.length}</span>
                 </button>
                 {CATEGORIES.map(cat => {
-                  const count = sourceList.filter(s => s.category.toLowerCase() === cat.id.toLowerCase()).length;
+                  const count = sourceList.filter(s => normalizeCategory(s.category) === cat.id.toLowerCase()).length;
                   const active = activeCategory === cat.id;
                   return (
                     <button key={cat.id} onClick={() => setActiveCategory(active ? "" : cat.id)}

@@ -10,7 +10,7 @@ import {
   MapPin, Building2, Tag, Sparkles, AlertCircle, Copy, Check,
   Database, ListOrdered, HelpCircle, Clock, ShieldCheck, Plus
 } from "lucide-react";
-import { ALL_SCHEMES, CATEGORIES, type Scheme } from "@/lib/schemes-data";
+import { ALL_SCHEMES, CATEGORIES, normalizeCategory, type Scheme } from "@/lib/schemes-data";
 import { apiClient } from "@/lib/api-client";
 import { useAuth } from "@/lib/auth-context";
 
@@ -72,7 +72,7 @@ export default function SchemeDetailPage() {
             id: s.id,
             name: s.title,
             ministry: s.ministry || "Government of India",
-            category: s.category?.slug || s.category_id || "social",
+            category: normalizeCategory(s.category?.slug || s.category || s.category_id),
             state: s.state || "Central Government",
             benefit: s.benefit_type || "Direct Benefit",
             benefitAmount: s.benefit_summary || (s.estimated_benefit_amount ? `₹${s.estimated_benefit_amount.toLocaleString("en-IN")}` : undefined),
@@ -86,7 +86,7 @@ export default function SchemeDetailPage() {
             steps: s.application_steps || [],
             faqs: s.faqs || [],
             applicationUrl: s.official_url || "https://myscheme.gov.in",
-            tags: [s.category?.slug, s.state, s.benefit_type].filter(Boolean) as string[],
+            tags: [normalizeCategory(s.category?.slug || s.category_id), s.state, s.benefit_type].filter(Boolean) as string[],
           });
           setIsFromDb(true);
           setLoading(false);
@@ -108,7 +108,7 @@ export default function SchemeDetailPage() {
     if (id) fetchScheme();
   }, [id]);
 
-  const cat = scheme ? CATEGORIES.find(c => c.id === scheme.category) : null;
+  const cat = scheme ? CATEGORIES.find(c => c.id === normalizeCategory(scheme.category)) : null;
   const colorCls = cat ? (CAT_COLOR[cat.color] || "bg-gray-100 text-gray-700") : "bg-gray-100 text-gray-700";
 
   const handleCopy = () => {

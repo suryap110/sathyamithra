@@ -22,7 +22,7 @@ async def list_schemes(
     offset: int = Query(0, ge=0),
     db: AsyncSession = Depends(get_db)
 ):
-    stmt = select(Scheme).filter(Scheme.is_active == True)
+    stmt = select(Scheme).options(selectinload(Scheme.category)).filter(Scheme.is_active == True)
     
     if state and state != "All":
         stmt = stmt.filter((Scheme.state.ilike(state)) | (Scheme.state == "Central"))

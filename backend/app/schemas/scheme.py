@@ -61,6 +61,7 @@ class SchemeSchema(BaseModel):
     short_description: str
     detailed_description: Optional[str] = None
     category_id: Optional[str] = None
+    category: Optional[SchemeCategorySchema] = None
     state: str
     ministry: Optional[str] = None
     benefit_type: Optional[str] = None
